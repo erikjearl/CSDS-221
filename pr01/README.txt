@@ -13,3 +13,40 @@ use#59	cost validation	        submit button must also check to see if the cost 
 use#60	value validation	    submit button must also check to see if the cost was positive and if it is not, notify user with a red error toaster that cost is negative	5	
 use#61	success notification    if submit button passes all validation errors, it will display a green success toaster saying the form was successfully submitted	5	
 use#123	libraries	            must use bootstrap (form-control and grid system with rows/cols), toastr, jquery, and moment libraries at least once in the app	5	
+
+
+
+
+
+
+--TODO--
+
+COST CALCULATION
+when adults, check-in, or check-out inputs are changed, the days textbox will update 
+with the number of days between check-out and check-in and the cost textbox will update 
+with the cost of the booking which will be $150 * # of adults * # of days
+
+RESET BUTON
+includes a reset button that clears all fields on the form and displays a blue info toaster 
+notifying the user that the fields were successfully cleared
+
+SUBMIT BUTON
+includes a submit button that will validate the username, first, last, phone, fax, and email
+fields for empty entries and if they don't exist, to highlight red the empty textbox
+(using the bootstrap .removeClass('has-error') and .addClass('has-error') as needed)
+and notify the user with a red error toaster displaying the field that it is missing
+
+submit button must also check to see if the cost was calculated and if it is not, 
+notify user with a red error toaster that no cost was calculated
+
+submit button must also check to see if the cost was positive and if it is not, 
+notify user with a red error toaster that cost is negative
+
+if submit button passes all validation errors, 
+it will display a green success toaster saying the form was successfully submitted
+
+LIBRARIES
+must use bootstrap (form-control and grid system with rows/cols),
+toastr 
+jquery
+moment libraries
