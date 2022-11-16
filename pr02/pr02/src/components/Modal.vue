@@ -5,7 +5,7 @@
 
           <!--panel header-->
           <v-card-title class='headline primary justify-center' primary-title style='color: white;'>
-            <div v-if="true">
+            <div v-if="isAddTask">
               <span class="fa-solid fa-circle-plus"/> &nbsp; Add Task
             </div>
             <div v-else>
@@ -15,28 +15,28 @@
           </v-card-title>
 
             <!--panel body-->
-            <v-layout v-if="true" justify-center class="elements mx-5 mb-0 mt-7" >
-              <v-text-field label="Title" outlined />
+            <v-layout v-if="isAddTask" justify-center class="elements mx-5 mb-0 mt-7" >
+              <v-text-field label="Title" outlined v-model="title"/>
             </v-layout>
 
             <v-layout justify-center class="element mx-5 my-2">
-              <v-text-field label="Description" outlined />
+              <v-text-field label="Description" outlined v-model="description"/>
             </v-layout>
 
             <v-layout justify-center class="elements mx-5 my-0">
-              <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="auto">
+              <v-menu ref="menu" :close-on-content-click="false" :return-value.sync="deadline" transition="scale-transition" offset-y min-width="auto">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-text-field v-model="date" label="Deadline" append-icon="mdi-calendar" v-bind="attrs" v-on="on" readonly outlined/>
+                  <v-text-field v-model="deadline" label="Deadline" append-icon="mdi-calendar" v-bind="attrs" v-on="on" readonly outlined/>
                 </template>
-                <v-date-picker v-model="date" no-title scrollable>
+                <v-date-picker v-model="deadline" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                  <v-btn text color="primary" @click="$refs.menu.save(deadline)">OK</v-btn>
                 </v-date-picker>
               </v-menu>
             </v-layout>
 
-              <v-radio-group label="Priority" class="elements mx-4 my-0">
+              <v-radio-group label="Priority" class="elements mx-4 my-0" v-model="priority">
                 <v-layout align-start row d-flex justify-space-between>
                   <v-radio label="Low" value="low"/>  &nbsp;
                   <v-radio label="Med" value="med" />  &nbsp;
@@ -45,8 +45,17 @@
               </v-radio-group>
 
             <v-layout justify-end class="elements mx-2 mt-0 mb-2">
-              <v-btn color="primary" elevation="2" @click="close" class="mr-2"> <span class="fa-solid fa-pen-to-square"/> EDIT </v-btn>
-              <v-btn color="error" elevation="2" @click="close"> <span class="fa-solid fa-ban"/> CANCEL</v-btn>
+              <div v-if="isAddTask" key="add" >
+                <v-btn color="primary" elevation="2" @click="addTask" class="mr-2">  
+                    <i class="fa-solid fa-circle-plus"></i> ADD 
+                </v-btn>
+              </div>
+              <div v-else key="update">
+                <v-btn color="primary" elevation="2" @click="updateTask" class="mr-2"> 
+                    <i class="fa-solid fa-pen-to-square"></i> EDIT
+                </v-btn>
+            </div>
+            <v-btn color="error" elevation="2" @click="close"> <span class="fa-solid fa-ban"/> CANCEL</v-btn>
             </v-layout>
 
           </v-card>
@@ -54,17 +63,57 @@
     </div>
   </template>
 
+
+
+<!-- Vue Script -->
   <script>
   export default {
     name: 'Modal-Test',
+    props: {
+      isModalVisible: Boolean,
+      isAddTask: Boolean,
+      existing_description: String,
+      existing_deadline: String,
+      existing_priority: String,
+    },
+    updated(){
+      
+    },
     methods: {
+      addTask(){
+        this.$emit('addTask', this.title, this.description, this.deadline, this.priority);
+        this.clear();
+        this.close();
+      },
+      updateTask(){
+        this.$emit('updateTask', this.description, this.deadline, this.priority);
+        this.clear();
+        this.close();
+      },
       close() {
         this.$emit('close');
       },
+      clear(){
+        this.title='';
+        this.description='';
+        this.deadline='';
+        this.priority='low';
+      },
     },
+    data(){
+      return{
+        title: '',
+        description: '',
+        deadline: '',
+        priority: 'low',
+      }
+    }
   };
 </script>
 
+
+
+<!-- Custom Styling -->
 <style>
   .modal-backdrop {
     position: fixed;
