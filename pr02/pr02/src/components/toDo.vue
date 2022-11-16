@@ -3,7 +3,10 @@
     <v-card>
     <!--panel header-->
         <v-card-title class='headline primary justify-center' primary-title style='color: white;'>
-            <span class="fa-solid fa-bars" /> &nbsp; FRAMEWORKS
+            <v-spacer />
+                <span class="fa-solid fa-bars" /> FRAMEWORKS
+            <v-spacer />
+            <v-btn color="primary" elevation="2" large @click="showModal"> <span class="fa-solid fa-circle-plus"/> ADD </v-btn>
         </v-card-title>
     <!--panel body-->
         <v-simple-table style='margin: 20px;'>
@@ -44,32 +47,58 @@
                 </tbody>
             </template>
         </v-simple-table>
-
-        <transition name="form" appear>
-            <div class="overlay" v-if="showForm">FORM HERE</div>
-        </transition>
-
-
     </v-card>
+    <Modal
+      v-show="isModalVisible"
+      @close="closeModal"
+    />
 </v-app>
 </template>
 <script>
+import Modal from './Modal.vue';
 //master
     export default {
+        name:'ToDo',
+        components:{
+            Modal,
+        },
+        tasks:[
+        {
+            title:'Task 1',
+            description:'a description',
+            deadline:'99-99-99',
+            priority:'low',
+            isComplete:'false',
+        },
+        {
+            title:'task title 2',
+            description:'sample2 description',
+            deadline:'00-00-00',
+            priority:'high',
+            isComplete:'false',
+        }
+      ],
     //life cycles
         created(){},
     //methods
-        methods: {}, 
+        methods: {
+            showModal() {
+                this.isModalVisible = true;
+            },
+            closeModal() {
+                this.isModalVisible = false;
+            }
+        },
     //watchers
         watch: {},
     //computed
         computed: {},
     //global vars
-            // eslint-disable-next-line
-          data: global => ({
-            header: `header...`,
-            body: `body...`
-        }),
+        data() {
+            return {
+                isModalVisible: false,
+            };
+        },
     }
 </script>
 <style>
@@ -82,23 +111,13 @@
         display:flex;
         justify-content: center;
         align-items: center;
-        width: 100vw;
+        width: 99vw;
         min-height: 100vh;
-        overflow-x: hidden;
     }
     .column{
         width: 15%;
     }
     .button{
         width: 90%;
-    }
-    .overlay{
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        z-index: 98;
-        background-color: rgba(0,0,0.3);
     }
 </style>
