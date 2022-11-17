@@ -76,8 +76,12 @@
       existing_deadline: String,
       existing_priority: String,
     },
-    updated(){
-      
+    watch:{
+      isModalVisible(newVal){
+        if(newVal && !this.isAddTask){
+          this.getParentData();
+        }
+      }
     },
     methods: {
       addTask(){
@@ -91,6 +95,7 @@
         this.close();
       },
       close() {
+        this.clear();
         this.$emit('close');
       },
       clear(){
@@ -99,6 +104,11 @@
         this.deadline='';
         this.priority='low';
       },
+      getParentData(){
+        this.description=this.existing_description;
+        this.deadline=this.existing_deadline;
+        this.priority=this.existing_priority;
+      }
     },
     data(){
       return{

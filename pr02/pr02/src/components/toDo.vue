@@ -32,11 +32,11 @@
                         <td class="text-center">{{task.priority}}</td>
                         <td> 
                             <v-layout justify-center>
-                                <v-checkbox /> 
+                                <v-checkbox v-model="tasks[index].isComplete"/> 
                             </v-layout>
                         </td>
                         <td>
-                            <v-layout justify-center>
+                            <v-layout justify-center v-if="!tasks[index].isComplete">
                                 <v-btn class="button mt-2" color="primary" elevation="2" large @click="updateTaskModal(index)">
                                     <span class="fa-solid fa-pen-to-square"/> UPDATE </v-btn>
                             </v-layout>
