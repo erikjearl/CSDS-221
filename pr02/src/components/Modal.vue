@@ -5,10 +5,10 @@
 
           <!--panel header-->
           <v-card-title class='headline primary justify-center' primary-title style='color: white;'>
-            <div v-if="isAddTask">
+            <div v-if="isAddTask" key="addA">
               <span class="fa-solid fa-circle-plus"/> &nbsp; Add Task
             </div>
-            <div v-else>
+            <div v-else key="updateA">
               <span class="fa-solid fa-pen-to-square"/> &nbsp; Edit Task
             </div>
             
@@ -49,12 +49,12 @@
                 </v-radio-group>
 
               <v-layout justify-end class="elements mx-2 mt-0 mb-2">
-                <div v-if="isAddTask" key="add" >
+                <div v-if="isAddTask" key="addB" >
                   <v-btn color="primary" elevation="2" @click="addTask" class="mr-2">  
                       <i class="fa-solid fa-circle-plus"></i> ADD 
                   </v-btn>
                 </div>
-                <div v-else key="update">
+                <div v-else key="updateB">
                   <v-btn color="primary" elevation="2" @click="updateTask" class="mr-2"> 
                       <i class="fa-solid fa-pen-to-square"></i> EDIT
                   </v-btn>

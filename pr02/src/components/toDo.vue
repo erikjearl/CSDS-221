@@ -14,12 +14,12 @@
             <!--table header-->
                 <thead>
                     <tr>
-                        <th class="column text-center">Title</th>
-                        <th class="column text-center">Description</th>
-                        <th class="column text-center">Deadline</th>
-                        <th class="column text-center">Priority</th>
-                        <th class="column text-center">Is Complete</th>
-                        <th class="column text-center" >Action</th>
+                        <th class="column text-center"> Title </th>
+                        <th class="column text-center"> Description </th>
+                        <th class="column text-center"> Deadline </th>
+                        <th class="column text-center"> Priority </th>
+                        <th class="column text-center"> Is Complete </th>
+                        <th class="column text-center"> Action </th>
                     </tr>
                 </thead>
                 
@@ -96,6 +96,7 @@ import Modal from './Modal.vue';
             },
             deleteTask(index){
                 this.tasks.splice(index, 1);
+                this.$toasted.success("the task was deleted successfully");
             },
 
 
@@ -108,11 +109,13 @@ import Modal from './Modal.vue';
                     priority:priority,
                     isComplete:false,
                 });
+                this.$toasted.success("the task was added successfully");
             },
             updateTask(description, deadline, priority){
                 this.tasks[this.taskIndex].description = description;
                 this.tasks[this.taskIndex].deadline = deadline;
                 this.tasks[this.taskIndex].priority = priority;
+                this.$toasted.success("the task was updated successfully");
             },
 
 
@@ -138,16 +141,7 @@ import Modal from './Modal.vue';
                 description:'',
                 deadline:'',
                 priority:'low',
-                tasks:[
-                    {
-                        title:'Sample',
-                        description:'Sample description',
-                        deadline:'99-99-99',
-                        priority:'low',
-                        isComplete:false,
-                    },
-                ],
-
+                tasks:[],
             };
         },
         //life cycles

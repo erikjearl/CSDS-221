@@ -1,4 +1,4 @@
-# pr02
+# pr02 - To Do App
 
 ## Project setup
 ```
