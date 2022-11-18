@@ -17,7 +17,7 @@
             <v-form ref="form" lazy-validation>
               <v-layout v-if="isAddTask" justify-center class="elements mx-5 mb-0 mt-7" >
                 <v-text-field label="Title" outlined v-model="title" 
-                  :rules="[v => !!v || 'Title is required']" required />
+                  :rules="titleRules" required />
               </v-layout>
 
               <v-layout justify-center class="element mx-5 my-2">
@@ -79,6 +79,7 @@
       existing_description: String,
       existing_deadline: String,
       existing_priority: String,
+      tasks: Array
     },
     watch:{
       isModalVisible(newVal){
@@ -129,6 +130,9 @@
         const [year, month, day] = date.split('-');
         return `${month}/${day}/${year}`;
       },
+      checkValidTitle(title){
+        return !this.tasks.filter(e => e.title === title).length > 0
+      }
     },
     data(){
       return{
@@ -137,6 +141,10 @@
         deadline: '',
         priority: 'low',
         date:'',
+        titleRules: [
+        v => !!v || 'Title is required',
+        v => this.checkValidTitle(v) || 'Title must be unique',
+      ],
       }
     }
   };

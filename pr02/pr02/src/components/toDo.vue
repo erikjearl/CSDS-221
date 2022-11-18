@@ -58,6 +58,7 @@
       :existing_description=description
       :existing_deadline=deadline
       :existing_priority=priority
+      :tasks=tasks
       @addTask="addTask"
       @updateTask="updateTask"
       @close="closeModal"
