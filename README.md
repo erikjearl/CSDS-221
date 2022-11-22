@@ -9,3 +9,6 @@
  ## pr02 - To Do App
  * Use Vue framework to build a To Do web app
  * Vuetify material library for styling
+
+ ## pr03- Memory Maze
+ * implement memory game using Vue framework
