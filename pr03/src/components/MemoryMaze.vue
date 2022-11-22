@@ -1,25 +1,51 @@
 <template>
-  <v-app>
-    <v-card>
-    <!--panel header-->
-        <v-card-title class='headline primary justify-center' primary-title style='black: white;'>
-          <v-spacer />
-                <h1 class="text-center"> Memory Maze </h1>
-            <v-spacer />
-            <v-btn color="primary" elevation="2" large @click="addTaskModal"> <span class="fa-solid fa-bars" /> Menu </v-btn>
-        </v-card-title>
+  <v-app style='margin:30px'>
+
+    <v-card  color="black">
+      <v-card-title>
+        <v-icon large left> mdi-menu</v-icon>
+          <span class="text-center" >Memory Maze </span>
+      </v-card-title>
     </v-card>
+    
+    <h1>rows</h1>
+    <v-slider
+      v-model="numRows"
+      color="rgb(124, 67, 230)"
+      min="1"
+      max="10"
+      thumb-label
+    ></v-slider>
+    <h1>cols</h1>
+    <v-slider
+      v-model="numCols"
+      color="rgb(124, 67, 230)"
+      min="1"
+      max="10"
+      thumb-label
+    ></v-slider>
+
+    <GameBoard 
+      :numRows="numRows"
+      :numCols="numCols"
+    />
+
   </v-app>
 </template>
 
 <script>
+import GameBoard from './GameBoard.vue'
+
 export default {
   components: {
+    GameBoard,
   },
   props: [
   ],
   data () {
     return {
+      numRows:5,
+      numCols:5,
     }
   },
   mounted () {
@@ -32,6 +58,12 @@ export default {
   methods: {
   },
   watch: {
+    numRows(rows){
+      this.numRows = parseInt(rows)
+    },
+    numCols(cols){
+      this.numCols = parseInt(cols)
+    }
   }
 }
 </script>
@@ -43,8 +75,6 @@ export default {
     }
     #app{
         position: relative;
-        justify-content: center;
-        align-items: center;
         width: 99vw;
         min-height: 100vh;
     }
