@@ -7,20 +7,20 @@
           <span class="text-center" >Memory Maze </span>
       </v-card-title>
     </v-card>
-    
-    <h1>rows</h1>
+     
+    <h3>rows</h3>
     <v-slider
       v-model="numRows"
       color="rgb(124, 67, 230)"
-      min="1"
+      min="2"
       max="10"
       thumb-label
     ></v-slider>
-    <h1>cols</h1>
+    <h3>cols</h3>
     <v-slider
       v-model="numCols"
       color="rgb(124, 67, 230)"
-      min="1"
+      min="2"
       max="10"
       thumb-label
     ></v-slider>

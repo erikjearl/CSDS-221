@@ -64,8 +64,8 @@ export default class Board {
         if(count > (m*n)/2.5){
             maze = this.generateMaze(m,n);
         }
-        maze[this.start[r]][this.start[c]] = '0';
-        maze[this.end[r]][this.end[c]] = '0';
+        maze[this.start[r]][this.start[c]] = '[]';
+        maze[this.end[r]][this.end[c]] = '[]';
         return maze;
     }
   }
