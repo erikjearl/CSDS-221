@@ -1,35 +1,45 @@
 <template>
   <v-app style='margin:30px'>
 
-    <v-card  color="black">
+    <!-- MENU BAR -->
+    <v-card  color="black" >
       <v-card-title>
-        <v-icon large left> mdi-menu</v-icon>
-          <span class="text-center" >Memory Maze </span>
+        <v-icon large left> mdi-menu </v-icon>
+          <span class="text-center"> Memory Maze </span>
       </v-card-title>
     </v-card>
-     
-    <h3>rows</h3>
-    <v-slider
-      v-model="numRows"
-      color="rgb(124, 67, 230)"
-      min="2"
-      max="10"
-      thumb-label
-    ></v-slider>
-    <h3>cols</h3>
-    <v-slider
-      v-model="numCols"
-      color="rgb(124, 67, 230)"
-      min="2"
-      max="10"
-      thumb-label
-    ></v-slider>
 
-    <GameBoard 
-      :numRows="numRows"
-      :numCols="numCols"
-    />
+    <!-- CONTENT -->
+    <v-container>
+      <v-row align="start" no-gutters>
+      <v-col cols="4">
+        <v-card>
+          <v-card-title> <h1>Options</h1></v-card-title>
+          <v-card-item>
+            <h3>rows</h3>
+            <v-slider v-model="numRows" color="rgb(124, 67, 230)" thumb-label
+              min="3" max="11" step="1"></v-slider>
+            <h3>cols</h3>
+            <v-slider v-model="numCols" color="rgb(124, 67, 230)" thumb-label
+              min="3" max="11" step ="2"></v-slider>
+          </v-card-item>
+          <v-card-item>
+            <v-btn variant="outlined" @click="$refs.board.newGame()"> New Game</v-btn> &nbsp;
+            <v-btn variant="outlined" @click="$refs.board.toggleShowMaze()"> Toggle Maze</v-btn> 
+          </v-card-item>
+        </v-card>
+      </v-col>
 
+
+      <!-- v col here ????-->
+        <GameBoard ref="board"
+          :numRows="numRows"
+          :numCols="numCols"
+        />
+
+        
+    </v-row>
+    </v-container>
   </v-app>
 </template>
 
@@ -44,8 +54,8 @@ export default {
   ],
   data () {
     return {
-      numRows:5,
-      numCols:5,
+      numRows:7,
+      numCols:7,
     }
   },
   mounted () {

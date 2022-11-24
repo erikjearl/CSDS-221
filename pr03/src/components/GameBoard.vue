@@ -1,11 +1,17 @@
 <template>
     <v-app>
-        <h1>board</h1>
+        <h1>
+            Board &nbsp;
+        </h1>
+        
         <div class="game-board">
-            <div v-for="(n, c) in numCols" :key="c">
-                <div v-for="(n, r) in numRows" :key="r">
-                    <cell @click="doMove(r, c)" :value="this.board.maze[r][c]" />
-                    <!-- <cell @click="doMove(i, j)" :value="board.grid[i][j]" /> -->
+            <div v-for="(n, c) in this.board.maze[0].length" :key="c">
+                <div v-for="(n, r) in this.board.maze.length" :key="r">
+                    <cell @click="clickCell(r, c)" 
+                        :maze="this.board.maze[r][c]"
+                        :value="this.board.maze[r][c]" 
+                        :showMaze=showMaze
+                    />
                 </div>
             </div>
         </div>
@@ -26,39 +32,71 @@
     },
     data () {
         return {
-            board: new Board(this.numRows, this.numCols),
+            board: '',
+            path: '',
+            showMaze:true,
         }
     },
     mounted () {
     },
     created () {
-        console.log(`-board data: ${this.board} s(${this.board.start}) e(${this.board.end})`)
-        console.log(`-board data: ${this.board.maze}`)
+        this.newGame();
     },
     methods: {
-        doMove(x, y) {
-            console.log(` ${x} ${y}`)
-            if (!this.board.doMove(x, y,)) {
-            // Invalid move.
-            return;
+        newGame(){
+            this.board = new Board(this.numRows, this.numCols);
+            this.path = [ [this.board.start[0], this.board.start[1]] ];
+            this.showMaze = false;
+            setTimeout(() => this.toggleShowMaze(), 500)
+        },
+        clickCell(x, y) {
+            let isValidMove = false;
+            this.path.forEach((cell) => {
+                let moves = [];
+                moves.push([cell[0]-1, cell[1]]);
+                moves.push([cell[0]+1, cell[1]]);
+                moves.push([cell[0], cell[1]-1]);
+                moves.push([cell[0], cell[1]+1]);
+                if(moves.filter((move) => move[0]===x && move[1]===y).length>0){
+                    isValidMove = true;
+                }
+            });
+            if(!isValidMove){
+                return;
             }
+            // move is valid
+            if(this.board.maze[x][y] === '.'){
+                this.board.maze[x][y] = '*';
+                this.path.push([x,y]);
+            }
+            if(this.board.maze[x][y] === 'x'){
+                this.path.forEach((cell) => this.board.maze[cell[0]][cell[1]] = '.');
+                this.path = [ [this.board.start[0], this.board.start[1]] ];
+                this.board.maze[this.board.start[0]][this.board.start[1]] = '*';
+            }
+            if(this.board.maze[x][y] === 'goal'){
+                this.path.push([x,y]);
+                this.path.forEach((cell) => this.board.maze[cell[0]][cell[1]] = 'o');
+                this.showMaze = true;
+            }
+            
             this.$forceUpdate();
-        }
+        },
+        toggleShowMaze(){
+            this.showMaze = true;
+            setTimeout(() => this.showMaze = false, 50)
+        },
     },
     watch: {
-        numRows(){
-            this.board = new Board(this.numRows, this.numCols);
-        },
-        numCols(){
-            this.board = new Board(this.numRows, this.numCols);
-        }
+        
     }
-    }
+}
 </script>
 
 <style>
     .game-board {
         display: flex;
         flex-wrap: wrap;
+        border: 2px solid rgb(0, 0, 0)
     }
 </style>
