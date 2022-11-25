@@ -17,13 +17,21 @@
       maze: String,
       value: String,
       showMaze: Boolean,
-    }
+      cellSize: Number,
+    },
+    data () {
+        return {
+        }
+    },
+    created () {
+      
+    },
   }
 </script>
 <style>
   .cell {
-    width: 7vw;
-    height: 7vw;
+    width: v-bind(cellSize + 'vw');
+    height: v-bind(cellSize + 'vw');
     border: 2px solid rgb(0, 0, 0);
     font-size: 42px;
     display: flex;

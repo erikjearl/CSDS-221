@@ -1,20 +1,20 @@
 <template>
     <v-app>
-        <h1>
-            Board &nbsp;
-        </h1>
+        <v-container class="ma-0 pa-0" fluid justify-center>
         
-        <div class="game-board">
+        <div class="game-board" ref="boardRef">
             <div v-for="(n, c) in this.board.maze[0].length" :key="c">
                 <div v-for="(n, r) in this.board.maze.length" :key="r">
                     <cell @click="clickCell(r, c)" 
                         :maze="this.board.maze[r][c]"
                         :value="this.board.maze[r][c]" 
                         :showMaze=showMaze
+                        :cellSize="cellSize"
                     />
                 </div>
             </div>
         </div>
+        </v-container>
     </v-app>
 </template>
 
@@ -35,15 +35,18 @@
             board: '',
             path: '',
             showMaze:true,
+            cellSize:'',
+            boardWidth:'',
         }
-    },
-    mounted () {
     },
     created () {
         this.newGame();
+         // get reference to board working
     },
     methods: {
         newGame(){
+            this.cellSize = Math.min(5, 45.5 / this.numCols)
+            this.boardWidth = this.numRows * this.cellSize,
             this.board = new Board(this.numRows, this.numCols);
             this.path = [ [this.board.start[0], this.board.start[1]] ];
             this.showMaze = false;
@@ -88,7 +91,9 @@
         },
     },
     watch: {
-        
+        numRows(){
+            console.log("here "+ this.boardRef)
+        }
     }
 }
 </script>
@@ -97,6 +102,6 @@
     .game-board {
         display: flex;
         flex-wrap: wrap;
-        border: 2px solid rgb(0, 0, 0)
+        justify-content: center;
     }
 </style>
