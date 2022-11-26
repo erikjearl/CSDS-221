@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <v-container class="ma-0 pa-0" fluid justify-center>
-        
+        <h1 v-if="!this.isPlaying" class="label">Click To Start</h1>
+        <v-container class="ma-0 pa-0 align-center" fluid justify-center >
         <div class="game-board" ref="boardRef">
             <div v-for="(n, c) in this.board.maze[0].length" :key="c">
                 <div v-for="(n, r) in this.board.maze.length" :key="r">
@@ -120,12 +120,7 @@
         },
         toggleShowOptions(){
             this.showOptions = !this.showOptions;
-            if(!this.showOptions){
-                this.newGame();
-            }else{
-                this.$emit('isPlaying',false);
-                this.setUpBoard();
-            }
+            this.setUpBoard();
         }
     },
     watch: {
@@ -173,5 +168,14 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+    }
+    .label{
+        margin:0;
+        position:absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap; 
+        color:white;
     }
 </style>

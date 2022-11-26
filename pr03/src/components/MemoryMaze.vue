@@ -3,7 +3,7 @@
 
     <!-- MENU BAR -->
     <v-toolbar app fixed :elevation="8" color="black">
-      <v-app-bar-nav-icon @click="this.options = !this.options" v-on="on"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="this.options = !this.options"></v-app-bar-nav-icon>
       <v-toolbar-title style="font-size: 25px;">Memory Maze</v-toolbar-title>
       <h2 style="color:rgb(235, 121, 255); margin-right:75px; font-style: italic;"> Win Streak: {{this.numWins}}</h2>
       
@@ -41,16 +41,13 @@
         <v-col cols="4" v-if="options" class="options">
 
           <v-card variant="outlined">
-            <br>
-            <v-card-title> <h1>Game Settings</h1></v-card-title>
-            
-            <br>
-            <v-row class="settings">
-                <v-btn variant="outlined" @click="easySettings" style="width:9vw; min-width: 85px; " color="primary"> Easy </v-btn>
-                <v-btn variant="outlined" @click="mediumSettings" style="width:9vw; min-width: 88px;" color="primary">  Medium </v-btn> 
-                <v-btn variant="outlined" @click="hardSettings" style="width:9vw; min-width: 85px;" color="primary"> Hard </v-btn> 
+            <v-card-title class="text-h3 mt-3" style="font-weight: 900;"> Game Settings </v-card-title>
+            <v-row class="settings mt-3">
+                <v-btn variant="outlined" @click="easySettings" style="width:9vw; min-width: 85px !important;" color="primary"> Easy </v-btn>
+                <v-btn variant="outlined" @click="mediumSettings" style="width:9vw; min-width: 88px !important;" color="primary">  Medium </v-btn> 
+                <v-btn variant="outlined" @click="hardSettings" style="width:9vw; min-width: 85px !important;" color="primary"> Hard </v-btn> 
             </v-row>
-            <v-card-item>
+            <v-card-item class="ma-0 pb-0">
               <h3>Number of Rows</h3>
               <v-slider v-model="numRows" color="primary" thumb-label class="mx-5"
                 min="3" max="10" step="1"></v-slider>
@@ -59,8 +56,8 @@
                 min="5" max="13" step ="2"></v-slider>
             </v-card-item>
             <v-card-item class="justify-center">
-              <v-btn variant="outlined" @click="$refs.board.newGame()" color="primary" style="width:12vw; min-width: 130px;"> New Game</v-btn> &nbsp;
-              <v-btn variant="outlined" @click="this.isPlaying = false" color="black" style="width:10vw; min-width: 110px;"> Quit Game</v-btn> &nbsp;
+              <v-btn variant="outlined" @click="$refs.board.newGame()" color="primary" style="min-width: 130px"> New Game</v-btn> &nbsp;
+              <v-btn variant="outlined" @click="this.isPlaying = false" color="black" style="min-width: 110px"> Quit Game</v-btn> &nbsp;
             </v-card-item>
           </v-card>
           
@@ -68,29 +65,22 @@
 
           <!-- LEADER BOARDS-->
           <v-card v-if="this.gameMode !== ''" variant="outlined" class="leaderBoard">
-            <v-card-title>
-              <h1>Leader Board <b v-if="this.gameMode==='EASY'" style="color:rgb(89, 13, 229)"> EASY </b> 
-                               <b v-if="this.gameMode==='MEDIUM'" style="color:rgb(89, 13, 229)"> MEDIUM </b>
-                               <b v-if="this.gameMode==='HARD'" style="color:rgb(89, 13, 229)"> HARD</b>
-              </h1>
+            <v-card-title class="mt-3 mb-0 pb-0">
+              <h1 class="mb-1" style="font-weight: 900;">Leaderboard</h1> 
+              <h3 v-if="this.gameMode==='EASY'" style="color:rgb(89, 13, 229)"> EASY </h3> 
+              <h3 v-if="this.gameMode==='MEDIUM'" style="color:rgb(89, 13, 229)"> MEDIUM </h3>
+              <h3 v-if="this.gameMode==='HARD'" style="color:rgb(89, 13, 229)"> HARD</h3>
             </v-card-title>
-            <v-card-item>
+            <v-card-item class="mt-0 pt-0">
               <v-table>
                 <thead>
                   <tr>
-                    <th class="text-left">
-                      Name
-                    </th>
-                    <th class="text-left">
-                      Wins
-                    </th>
+                    <th class="text-center" style="font-size:medium"> &nbsp; Name</th>
+                    <th class="text-center" style="font-size:medium"> &nbsp; Win Streak</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr
-                    v-for="item in mediumRank"
-                    :key="item.name"
-                  >
+                <tbody style="color:rgb(89, 13, 229)">
+                  <tr v-for="item in this.gameMode==='EASY'?easyRank:this.gameMode==='MEDIUM'?mediumRank:this.gameMode==='HARD'?hardRank:none" :key="item.name" >
                     <td>{{ item.name }}</td>
                     <td>{{ item.wins }}</td>
                   </tr>
@@ -98,8 +88,6 @@
               </v-table>
             </v-card-item>
           </v-card>
-          
-
         </v-col>
         </Transition>
 
@@ -118,6 +106,34 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-dialog v-model="newScore" style="width:40vw; min-width: 500px;" persistent>
+      <v-card>
+        <v-card-title class="text-h3 my-4" style="text-align: center; font-weight: bold;">
+          NEW HIGH SCORE!
+        </v-card-title>
+        <v-card-text class="pa-0 ma-0">
+          <v-container class="justify-center ma-0 pa-0">
+            <v-row no-gutters>
+              <v-col cols="8">
+                <v-text-field v-model="playerName" variant="outlined" label="Enter Your Name" required
+                  class='ml-10 mr-1' style="color:rgb(89, 13, 229);" ></v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-text-field variant="solo" readonly
+                  class='mr-10 ml-1 centered-input'><b style="color:rgb(89, 13, 229);font-weight:bold;text-align:center;width:100%">Score: {{numWins}}</b></v-text-field>
+              </v-col>
+              </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions class="justify-center pt-0">
+          <v-btn color="primary" variant="outlined" @click="addNewScore" style="width:15vw;"> SUBMIT </v-btn>
+          <v-btn color="red" variant="outlined" @click="newScore = false; numWins=0" style="width:15vw;"> CANCEL </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
   </v-app>
 </template>
 
@@ -140,17 +156,24 @@ export default {
       numWins:0,
       gameMode:"MEDIUM",
 
+      newScore: false,
+      playerName:'',
 
+      easyRank:[
+        {name: 'Erik', wins: 3},
+        {name: '-', wins: 0},
+        {name: '-', wins: 0},
+      ],
       mediumRank: [
-          {
-            name: 'Erik',
-            wins: 10,
-          },
-          {
-            name: 'NA',
-            wins: 0,
-          },
-        ],
+        {name: 'Erik', wins: 2},
+        {name: '-', wins: 0},
+        {name: '-', wins: 0},
+      ],
+      hardRank:[
+        {name: 'Erik', wins: 1},
+        {name: '-', wins: 0},
+        {name: '-', wins: 0},
+      ],
     }
   },
   mounted () {
@@ -180,7 +203,27 @@ export default {
       if(isWin){
         this.numWins++;
       }else{
-        this.numWins = 0;
+        //check leader boards
+        let rank;
+        if(this.gameMode ==='EASY'){
+          rank = this.easyRank;
+        }
+        if(this.gameMode ==='MEDIUM'){
+          rank = this.mediumRank;
+        }
+        if(this.gameMode ==='HARD'){
+          rank = this.hardRank;
+        }
+        rank = rank.sort((a,b) => b.wins - a.wins);
+        console.log(`here ${rank.length}`)
+        let rank3 = rank.length>=3?rank[2]:{wins:0};
+        console.log(`${rank3.wins} ${this.numWins} ${(this.numWins > rank3.wins)}`)
+        if(this.numWins > rank3.wins){
+          this.isPlaying = false;
+          this.newScore = true;
+        }else{
+          this.numWins = 0;
+        }
       }
     },
     setGameMode(){
@@ -188,6 +231,24 @@ export default {
       else if(this.numCols == 9 && this.numRows == 7)    this.gameMode = 'MEDIUM';
       else if(this.numCols == 13 && this.numRows == 10)  this.gameMode = 'HARD';
       else this.gameMode = '';
+    },
+    addNewScore(){
+      let rank;
+      if(this.gameMode ==='EASY'){
+        rank = this.easyRank;
+      }
+      if(this.gameMode ==='MEDIUM'){
+        rank = this.mediumRank;
+      }
+      if(this.gameMode ==='HARD'){
+        rank = this.hardRank;
+      }
+      rank.length = 2;
+      rank.push({name:this.playerName, wins:this.numWins})
+      rank = rank.sort((a,b) => b.wins - a.wins);
+      this.numWins = 0;
+      this.playerName = '';
+      this.newScore = false;
     }
   },
   watch: {
@@ -220,17 +281,18 @@ export default {
       min-width: 300px;
       margin-left:20px;
       background-color:white;
+      text-align: center;
     }
     .leaderBoard{
       background-color:white;
+      text-align: center;
     }
     .board{
-      min-width: 250px;
+      min-width: 350px;
     }
     .settings{
       justify-content: space-between;
-      height:70px;
-      margin: 0px 20px;
+      margin: 0px 20px 15px 20px;
       padding:0px;
     }
 
