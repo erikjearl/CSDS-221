@@ -29,25 +29,29 @@
     props: {
         numRows: Number,
         numCols: Number,
+        showOptions: Boolean,
     },
     data () {
         return {
             board: '',
             path: '',
-            showMaze:true,
+            showMaze:false,
             cellSize:'',
             boardWidth:'',
         }
     },
     created () {
-        this.newGame();
-         // get reference to board working
+        this.setUpBoard();
     },
     methods: {
-        newGame(){
-            this.cellSize = Math.min(5, 45.5 / this.numCols)
-            this.boardWidth = this.numRows * this.cellSize,
+        setUpBoard(){
+            this.cellSize = 20 / Math.max(this.numCols,this.numRows+1)+ 3;
+            if(!this.showOptions){this.cellSize = this.cellSize + (10 / Math.max(this.numCols,this.numRows+1));}
             this.board = new Board(this.numRows, this.numCols);
+            this.showMaze = false;
+        },
+        newGame(){
+            this.setUpBoard();
             this.path = [ [this.board.start[0], this.board.start[1]] ];
             this.showMaze = false;
             setTimeout(() => this.toggleShowMaze(), 500)
@@ -92,7 +96,13 @@
     },
     watch: {
         numRows(){
-            console.log("here "+ this.boardRef)
+            this.setUpBoard();
+        },
+        numCols(){
+            this.setUpBoard();
+        },
+        showOptions(){
+            this.setUpBoard();
         }
     }
 }
