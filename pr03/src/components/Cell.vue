@@ -1,7 +1,9 @@
 <template>
     <div class="cell" :class=" {
+        'off' : !this.isPlaying,
         'plain' : maze === 'x' || maze === '.',
         'path': maze === '*',
+        'wall': maze === '+',
         'goal': maze === 'goal',
         'done': maze === 'o',
     }">
@@ -13,7 +15,7 @@
   export default {
     name:'gameCell',
     props: {
-      state: String,
+      isPlaying: Boolean,
       maze: String,
       value: String,
       showMaze: Boolean,
@@ -46,16 +48,23 @@
     background-color:rgb(194, 194, 194);
   }
   .plain:hover{
-    background-color:rgb(82, 82, 82);
+    background-color:rgb(117, 117, 117);
   }
 
+
   .path{
-    background-color:rgb(0, 255, 0) !important;
+    background-color:rgb(0, 255, 0);
   }
   .goal{
-    background-color:rgb(255, 0, 0);
+    background-color:rgb(255, 170, 0);
   }
   .done{
     background-color:rgb(255, 225, 0);
+  }
+  .wall{
+    background-color:rgb(255, 0, 0);
+  }
+  .off{
+    background-color:rgb(82, 82, 82) !important;
   }
 </style>

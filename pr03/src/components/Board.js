@@ -62,7 +62,7 @@ export default class Board {
         let count = 0;
         maze.forEach((row) => {count += countOccurrences(row,'.')});
     
-        if(count > (m*n)/2.5){
+        if(count > (m*n)/1.6){
             maze = this.generateMaze(m,n);
         }
         maze[this.start[r]][this.start[c]] = '*';
