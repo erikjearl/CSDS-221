@@ -3,8 +3,9 @@
 
     <!-- MENU BAR -->
     <v-toolbar app fixed :elevation="8" color="black">
-      <v-app-bar-nav-icon @click="toggleOptions" v-on="on"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="this.options = !this.options" v-on="on"></v-app-bar-nav-icon>
       <v-toolbar-title style="font-size: 25px;">Memory Maze</v-toolbar-title>
+      <h2 style="color:rgb(235, 121, 255); margin-right:75px; font-style: italic;"> Win Streak: {{this.numWins}}</h2>
       
       <v-btn color="dark"> Help
         <v-dialog v-model="helpMenu" activator="parent" class="helpMenu">
@@ -49,7 +50,6 @@
                 <v-btn variant="outlined" @click="mediumSettings" style="width:9vw; min-width: 88px;" color="primary">  Medium </v-btn> 
                 <v-btn variant="outlined" @click="hardSettings" style="width:9vw; min-width: 85px;" color="primary"> Hard </v-btn> 
             </v-row>
-            
             <v-card-item>
               <h3>Number of Rows</h3>
               <v-slider v-model="numRows" color="primary" thumb-label class="mx-5"
@@ -66,12 +66,37 @@
           
           <br>
 
-          <v-card variant="outlined">
+          <!-- LEADER BOARDS-->
+          <v-card v-if="this.gameMode !== ''" variant="outlined" class="leaderBoard">
             <v-card-title>
-               <h1>Leader Boards</h1></v-card-title>
-               <v-card-item>
-                FIRST
-               </v-card-item>
+              <h1>Leader Board <b v-if="this.gameMode==='EASY'" style="color:rgb(89, 13, 229)"> EASY </b> 
+                               <b v-if="this.gameMode==='MEDIUM'" style="color:rgb(89, 13, 229)"> MEDIUM </b>
+                               <b v-if="this.gameMode==='HARD'" style="color:rgb(89, 13, 229)"> HARD</b>
+              </h1>
+            </v-card-title>
+            <v-card-item>
+              <v-table>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      Name
+                    </th>
+                    <th class="text-left">
+                      Wins
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in mediumRank"
+                    :key="item.name"
+                  >
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.wins }}</td>
+                  </tr>
+                </tbody>
+              </v-table>
+            </v-card-item>
           </v-card>
           
 
@@ -87,6 +112,7 @@
               :options="options"
               :isPlaying="isPlaying"
               @isPlaying="togglePlaying"
+              @winCounter="winCounter"
             />
           </div>
         </v-col>
@@ -107,10 +133,24 @@ export default {
   data () {
     return {
       numRows:7,
-      numCols:7,
+      numCols:9,
       options:true,
       helpMenu: false,
       isPlaying:false,
+      numWins:0,
+      gameMode:"MEDIUM",
+
+
+      mediumRank: [
+          {
+            name: 'Erik',
+            wins: 10,
+          },
+          {
+            name: 'NA',
+            wins: 0,
+          },
+        ],
     }
   },
   mounted () {
@@ -122,12 +162,12 @@ export default {
   },
   methods: {
     easySettings(){
-      this.numRows = 4;
-      this.numCols = 5;
+      this.numRows = 5;
+      this.numCols = 7;
     },
     mediumSettings(){
       this.numRows = 7;
-      this.numCols = 7;
+      this.numCols = 9;
     },
     hardSettings(){
       this.numRows = 10;
@@ -136,16 +176,28 @@ export default {
     togglePlaying(newVal){
       this.isPlaying = newVal;
     },
-    toggleOptions(){
-      this.options = !this.options;
+    winCounter(isWin){
+      if(isWin){
+        this.numWins++;
+      }else{
+        this.numWins = 0;
+      }
     },
+    setGameMode(){
+      if(this.numCols == 7 && this.numRows == 5)    this.gameMode = 'EASY';
+      else if(this.numCols == 9 && this.numRows == 7)    this.gameMode = 'MEDIUM';
+      else if(this.numCols == 13 && this.numRows == 10)  this.gameMode = 'HARD';
+      else this.gameMode = '';
+    }
   },
   watch: {
     numRows(rows){
       this.numRows = parseInt(rows)
+      this.setGameMode();
     },
     numCols(cols){
       this.numCols = parseInt(cols)
+      this.setGameMode();
     }
   }
 }
@@ -167,6 +219,10 @@ export default {
     .options {
       min-width: 300px;
       margin-left:20px;
+      background-color:white;
+    }
+    .leaderBoard{
+      background-color:white;
     }
     .board{
       min-width: 250px;

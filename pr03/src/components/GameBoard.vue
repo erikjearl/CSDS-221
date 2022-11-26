@@ -98,6 +98,8 @@
                 this.path.forEach((cell) => this.board.maze[cell[0]][cell[1]] = '.');
                 this.path = [ [this.board.start[0], this.board.start[1]] ];
                 this.board.maze[this.board.start[0]][this.board.start[1]] = '*';
+                this.toggleShowMaze();
+                this.$emit('winCounter',false);
             }
             if(this.board.maze[x][y] === 'goal'){
                 this.path.push([x,y]);
@@ -106,6 +108,7 @@
                 this.board.maze[this.board.end[0]][this.board.end[1]] = 'goal';
                 this.showMaze = true;
                 this.gameOver = true;
+                this.$emit('winCounter',true);
             }
 
             this.$forceUpdate();
@@ -113,7 +116,7 @@
         },
         toggleShowMaze(){
             this.showMaze = true;
-            setTimeout(() => this.showMaze = false, 50)
+            setTimeout(() => this.showMaze = false, 40)
         },
         toggleShowOptions(){
             this.showOptions = !this.showOptions;
