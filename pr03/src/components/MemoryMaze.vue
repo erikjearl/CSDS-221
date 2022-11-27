@@ -4,19 +4,19 @@
     <!-- MENU BAR -->
     <v-toolbar app fixed :elevation="8" color="black">
       <v-app-bar-nav-icon @click="this.options = !this.options"></v-app-bar-nav-icon>
-      <v-toolbar-title style="font-size: 25px;">Memory Maze</v-toolbar-title>
-      <h2 style="color:rgb(235, 121, 255); margin-right:75px; font-style: italic;"> Win Streak: {{this.numWins}}</h2>
+      <v-toolbar-title class="title-font" style="font-size: 31px; font-family:Impact;">Memory Maze</v-toolbar-title>
+      <h2 style="color:rgb(235, 121, 255); margin-right:75px; font-style: italic; font-family:Impact"> ~ Win Streak: {{this.numWins}} ~ </h2>
       
       <v-btn color="dark"> Help
         <v-dialog v-model="helpMenu" activator="parent" class="helpMenu">
           <v-card>
-            <v-card-text>
-              <h1>Memory Maze Rules:</h1>
-              <v-list>
-                <v-list-item>Try to find the path from the green starting block to the red end block</v-list-item>
-                <v-list-item>You can only move in cardinal directions { N S E W }</v-list-item>
-                <v-list-item>Click the menu button to toggle game settings</v-list-item>
-                <v-list-item>Good Luck</v-list-item>
+            <v-card-text class="help">
+              <h1 style="color:rgb(89, 13, 229)">Memory Maze Rules:</h1>
+              <v-list class="pa-0">
+                <v-list-item>Try to <b>find the path</b> from the green starting block to the orange end block</v-list-item>
+                <v-list-item>You can only move in cardinal directions: <b> N S E W </b></v-list-item>
+                <v-list-item>Click the <b>menu icon</b> to the toggle game settings panel</v-list-item>
+                <v-list-item>Try to get the highest <b>WIN STREAK</b> to make the leaderboard. <b>Good Luck!</b></v-list-item>
               </v-list>
             </v-card-text>
             <v-card-actions>
@@ -41,7 +41,7 @@
         <v-col cols="4" v-if="options" class="options">
 
           <v-card variant="outlined">
-            <v-card-title class="text-h3 mt-3" style="font-weight: 900;"> Game Settings </v-card-title>
+            <v-card-title style="font-size:44px;" class="mt-3 title-font"> Game Settings </v-card-title>
             <v-row class="settings mt-3">
                 <v-btn variant="outlined" @click="easySettings" style="width:9vw; min-width: 85px !important;" color="primary"> Easy </v-btn>
                 <v-btn variant="outlined" @click="mediumSettings" style="width:9vw; min-width: 88px !important;" color="primary">  Medium </v-btn> 
@@ -57,7 +57,7 @@
             </v-card-item>
             <v-card-item class="justify-center">
               <v-btn variant="outlined" @click="$refs.board.newGame()" color="primary" style="min-width: 130px"> New Game</v-btn> &nbsp;
-              <v-btn variant="outlined" @click="this.isPlaying = false" color="black" style="min-width: 110px"> Quit Game</v-btn> &nbsp;
+              <v-btn variant="outlined" @click="winCounter(); this.isPlaying=false" color="black" style="min-width: 110px"> Quit Game</v-btn> &nbsp;
             </v-card-item>
           </v-card>
           
@@ -66,10 +66,10 @@
           <!-- LEADER BOARDS-->
           <v-card v-if="this.gameMode !== ''" variant="outlined" class="leaderBoard">
             <v-card-title class="mt-3 mb-0 pb-0">
-              <h1 class="mb-1" style="font-weight: 900;">Leaderboard</h1> 
-              <h3 v-if="this.gameMode==='EASY'" style="color:rgb(89, 13, 229)"> EASY </h3> 
-              <h3 v-if="this.gameMode==='MEDIUM'" style="color:rgb(89, 13, 229)"> MEDIUM </h3>
-              <h3 v-if="this.gameMode==='HARD'" style="color:rgb(89, 13, 229)"> HARD</h3>
+              <h1 class="title-font mb-1"> Leaderboard</h1> 
+              <h3 v-if="this.gameMode==='EASY'" style="color:rgb(89, 13, 229)"> -EASY- </h3> 
+              <h3 v-if="this.gameMode==='MEDIUM'" style="color:rgb(89, 13, 229)"> -MEDIUM- </h3>
+              <h3 v-if="this.gameMode==='HARD'" style="color:rgb(89, 13, 229)"> -HARD- </h3>
             </v-card-title>
             <v-card-item class="mt-0 pt-0">
               <v-table>
@@ -87,6 +87,11 @@
                 </tbody>
               </v-table>
             </v-card-item>
+          </v-card>
+          <v-card v-else variant="outlined">
+            <v-card-title class="my-3">
+              <h2 class="title-font" style="color:rgb(89, 13, 229);">  - CUSTOM GAME - </h2> 
+            </v-card-title>
           </v-card>
         </v-col>
         </Transition>
@@ -109,8 +114,11 @@
 
     <v-dialog v-model="newScore" style="width:40vw; min-width: 500px;" persistent>
       <v-card>
-        <v-card-title class="text-h3 my-4" style="text-align: center; font-weight: bold;">
-          NEW HIGH SCORE!
+        <v-card-title class="text-h5 mt-5" style="text-align: center; font-weight: bold;">
+              <h1 class="mb-3 title-font" style="font-family:Impact"> NEW HIGH SCORE!</h1>
+              <h4 v-if="this.gameMode==='EASY'" style="color:rgb(89, 13, 229)"> EASY </h4> 
+              <h4 v-if="this.gameMode==='MEDIUM'" style="color:rgb(89, 13, 229)"> MEDIUM </h4>
+              <h4 v-if="this.gameMode==='HARD'" style="color:rgb(89, 13, 229)"> HARD</h4>
         </v-card-title>
         <v-card-text class="pa-0 ma-0">
           <v-container class="justify-center ma-0 pa-0">
@@ -215,7 +223,6 @@ export default {
           rank = this.hardRank;
         }
         rank = rank.sort((a,b) => b.wins - a.wins);
-        console.log(`here ${rank.length}`)
         let rank3 = rank.length>=3?rank[2]:{wins:0};
         console.log(`${rank3.wins} ${this.numWins} ${(this.numWins > rank3.wins)}`)
         if(this.numWins > rank3.wins){
@@ -249,6 +256,10 @@ export default {
       this.numWins = 0;
       this.playerName = '';
       this.newScore = false;
+    },
+    quitGame(){
+      this.isPlaying = false;
+      this.numWins = 0;
     }
   },
   watch: {
@@ -288,12 +299,20 @@ export default {
       text-align: center;
     }
     .board{
-      min-width: 350px;
+      min-width: 550px;
     }
     .settings{
       justify-content: space-between;
       margin: 0px 20px 15px 20px;
       padding:0px;
+    }
+    .title-font{
+      font-weight: 900 !important; 
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      white-space: initial;
+    }
+    .help{
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
 
@@ -308,14 +327,12 @@ export default {
     .slide-leave-to {
       transform: translate(-100%, 0);
     }
-
     .img-slider{
       overflow: hidden;
       position: relative;
       height: 200px;
       width: 400px;
     }
-
     .img-slider img {
       position: absolute;
       top: 0;
