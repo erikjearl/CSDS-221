@@ -1,6 +1,7 @@
 <template>
     <v-app>
-        <h1 v-if="!this.isPlaying" class="label">Click To Start</h1>
+        <h1 v-if="!this.isPlaying" class="label" @click="clickCell(0,0)"> &nbsp; Click To Play &nbsp; </h1>
+        <h1 v-if="this.isPlaying && this.gameOver" class="label" @click="clickCell(0,0)"> &nbsp; Next Level &nbsp;</h1>
         <v-container class="ma-0 pa-0 align-center" fluid justify-center >
         <div class="game-board" ref="boardRef">
             <div v-for="(n, c) in this.board.maze[0].length" :key="c">
@@ -177,5 +178,6 @@
         transform: translate(-50%, -50%);
         white-space: nowrap; 
         color:white;
+        background-color:black;
     }
 </style>

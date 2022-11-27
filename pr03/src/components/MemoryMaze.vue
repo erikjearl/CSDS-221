@@ -48,10 +48,10 @@
                 <v-btn variant="outlined" @click="hardSettings" style="width:9vw; min-width: 85px !important;" color="primary"> Hard </v-btn> 
             </v-row>
             <v-card-item class="ma-0 pb-0">
-              <h3>Number of Rows</h3>
+              <h3># of Rows</h3>
               <v-slider v-model="numRows" color="primary" thumb-label class="mx-5"
                 min="3" max="10" step="1"></v-slider>
-              <h3>Number of Column</h3>
+              <h3># of Columns</h3>
               <v-slider v-model="numCols" color="primary" thumb-label class="mx-5"
                 min="5" max="13" step ="2"></v-slider>
             </v-card-item>
