@@ -11,4 +11,5 @@
  * Vuetify material library for styling
 
  ## pr03- Memory Maze
- * implement memory game using Vue framework
+ * implement memory game using Vue framework with Vuitify styling
+ * build custom maze generator in javascript
