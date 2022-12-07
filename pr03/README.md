@@ -1,24 +1,7 @@
-# pr03
+# Memory Maze
+## https://memmory-maze.netlify.app/
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* A front end web game for users to test their memory and compete for a high score </li> 
+* Implemented using the Vue.js framework with Vuetify styling </li>
+* Created a randomized maze generator using javascript built on custom HTML and CSS </li>
+* <a href="https://memmory-maze.netlify.app/" target="_blank"> Play the Memory Maze game!</a></li>
