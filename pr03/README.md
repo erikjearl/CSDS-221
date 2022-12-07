@@ -1,5 +1,4 @@
 # Memory Maze
-## https://memmory-maze.netlify.app/
 
 * A front end web game for users to test their memory and compete for a high score </li> 
 * Implemented using the Vue.js framework with Vuetify styling </li>
