@@ -1,5 +1,5 @@
 # CSDS-221
- Full Stack Web Dev
+ My projects from the Full Stack Web Development course at CWRU.
 
 ## pr01 - Form
  * Implement basic html form
